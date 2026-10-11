@@ -58,13 +58,13 @@ dat = dat.drop(columns=['tokenized_sents'])
 
 # further text processing
 # remove stop words
-stopwords = nltk.corpus.stopwords.words('english')
+stopwords = set(nltk.corpus.stopwords.words('english'))
 dat["tokenized_words"] = dat["tokenized_words"].apply(lambda review: [word for word in review if word not in stopwords])
 # lemmatization
 wnl = nltk.stem.wordnet.WordNetLemmatizer()
 dat["tokenized_words"] = dat["tokenized_words"].apply(lambda review: [wnl.lemmatize(word) for word in review])
 
-data = data[["popular","user_reviews","days_since_review","user_rating","rating_diff","num_words","avg_word_len","avg_sent_len","pct_verbs","pct_nouns","pct_adj","quote","sentiment","tokenized_words"]]
+dat = dat[["popular","user_reviews","days_since_review","user_rating","rating_diff","num_words","avg_word_len","avg_sent_len","pct_verbs","pct_nouns","pct_adj","quote","sentiment","tokenized_words"]]
 
 # save dataset
 dat.to_csv("tokenized_reviews.csv", index=False)

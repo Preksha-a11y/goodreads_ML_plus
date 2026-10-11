@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import fasttext
 
-review_path = "data/goodreads_reviews_dedup.json"
-book_path = "data/goodreads_books.json"
+review_path = "/kaggle/input/datasets/prekshacm/goodreads-reviews-dedup-json/goodreads_reviews_dedup.json"
+book_path = "/kaggle/input/datasets/prekshacm/goodreads-books-json/goodreads_books.json"
 
 # read review data, removing entries with 0 likes
 reviews = []

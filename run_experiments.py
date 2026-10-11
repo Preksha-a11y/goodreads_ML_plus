@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier, StackingClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import (
     accuracy_score, recall_score, roc_auc_score,
@@ -201,6 +201,26 @@ gb_d.fit(X_train_d, y_train, sample_weight=sample_weights_train)
 y_pred = gb_d.predict(X_test_d)
 y_prob = gb_d.predict_proba(X_test_d)[:, 1]
 evaluate("Gradient Boosting", "Subset D (TF-IDF)", f"Cost-Sensitive (w={pos_weight_val:.2f})", y_test, y_pred, y_prob)
+
+# Model 8b: Stacking Ensemble Meta-Learner (* Unit 3 Add-On)
+print("\n[* NOVEL ADD-ON: UNIT 3] Training Stacking Ensemble Meta-Learner...")
+base_estimators = [
+    ('lr', LogisticRegression(class_weight='balanced', max_iter=1000, random_state=229)),
+    ('gb', HistGradientBoostingClassifier(max_iter=100, max_depth=5, random_state=229)),
+    ('rf', RandomForestClassifier(n_estimators=80, max_depth=7, class_weight='balanced', n_jobs=-1, random_state=229))
+]
+stacking_clf = StackingClassifier(
+    estimators=base_estimators,
+    final_estimator=LogisticRegression(random_state=229),
+    cv=3,
+    stack_method='predict_proba',
+    n_jobs=-1
+)
+stacking_clf.fit(X_train_b, y_train)
+y_pred_stack = stacking_clf.predict(X_test_b)
+y_prob_stack = stacking_clf.predict_proba(X_test_b)[:, 1]
+evaluate("Stacking Meta-Learner", "Subset B (Meta+NLP)", "Stacking Ensemble (LR+GB+RF)", y_test, y_pred_stack, y_prob_stack)
+
 
 # 4. PyTorch Deep Neural Network (ReviewMLP)
 print("\n" + "="*70)
@@ -401,6 +421,9 @@ demo_d = np.hstack([demo_meta_scaled, demo_vec])
 
 pred_prob_lr = lr_b_cost.predict_proba(demo_meta_scaled)[:, 1][0]
 pred_prob_gb = gb_d.predict_proba(demo_d)[:, 1][0]
+pred_prob_stack = stacking_clf.predict_proba(demo_meta_scaled)[:, 1][0]
 print(f"[*] Logistic Regression Predicted Popularity Prob: {pred_prob_lr*100:.1f}%")
 print(f"[*] Gradient Boosting (TF-IDF) Popularity Prob:   {pred_prob_gb*100:.1f}%")
+print(f"[*] Stacking Meta-Learner (Ensemble) Popularity:  {pred_prob_stack*100:.1f}%")
 print("[*] All experiments executed and saved successfully!")
+

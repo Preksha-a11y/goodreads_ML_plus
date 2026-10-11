@@ -7,5 +7,6 @@ Subset B (Meta+NLP),Gradient Boosting,None (Full),0.804,0.161,0.975,0.73
 Subset B (Meta+NLP),Gradient Boosting,Random Undersample,0.669,0.659,0.671,0.729
 Subset B (Meta+NLP),Gradient Boosting,Cost-Sensitive (w=3.76),0.674,0.649,0.681,0.73
 Subset D (TF-IDF),Gradient Boosting,Cost-Sensitive (w=3.76),0.681,0.651,0.689,0.736
-Subset B (Meta+NLP),PyTorch ReviewMLP,Random Undersample,0.678,0.639,0.688,0.725
-Subset B (Meta+NLP),PyTorch ReviewMLP,Cost-Weighted Loss (w=3.76),0.667,0.663,0.668,0.727
+Subset B (Meta+NLP),Stacking Meta-Learner,Stacking Ensemble (LR+GB+RF),0.804,0.182,0.97,0.73
+Subset B (Meta+NLP),PyTorch ReviewMLP,Random Undersample,0.652,0.689,0.643,0.725
+Subset B (Meta+NLP),PyTorch ReviewMLP,Cost-Weighted Loss (w=3.76),0.649,0.691,0.638,0.726

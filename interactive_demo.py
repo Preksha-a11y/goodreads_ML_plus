@@ -19,7 +19,17 @@ for res in ['vader_lexicon', 'punkt', 'punkt_tab', 'averaged_perceptron_tagger',
     except Exception:
         pass
 
-def train_demo_model():
+import pickle
+
+def load_or_train_demo_model():
+    model_pkl = os.path.join(os.path.dirname(__file__), 'demo_model.pkl')
+    if os.path.exists(model_pkl):
+        print("[*] Loading pre-trained model from demo_model.pkl (instant startup)...")
+        with open(model_pkl, 'rb') as f:
+            data = pickle.load(f)
+        print("[*] Model loaded and ready for live queries!\n")
+        return data['model'], data['scaler'], data['features']
+    
     data_path = os.path.join(os.path.dirname(__file__), 'data', 'tokenized_reviews.csv')
     print("[*] Loading training data for live demo...")
     df = pd.read_csv(data_path)
@@ -53,8 +63,13 @@ def train_demo_model():
     print("[*] Training Gradient Boosting model on Contextual Scale Features...")
     clf = HistGradientBoostingClassifier(max_iter=150, max_depth=6, learning_rate=0.08, random_state=229)
     clf.fit(X, y, sample_weight=sample_weights)
+    
+    with open(model_pkl, 'wb') as f:
+        pickle.dump({'model': clf, 'scaler': scaler, 'features': features}, f)
+        
     print("[*] Model trained and ready for live queries!\n")
     return clf, scaler, features
+
 
 def extract_features_from_text(text, user_reviews, ratings_count, user_rating, avg_rating, days_since_review):
     sid = SentimentIntensityAnalyzer()
@@ -118,7 +133,7 @@ def extract_features_from_text(text, user_reviews, ratings_count, user_rating, a
     return feat_dict
 
 def run_interactive_demo():
-    clf, scaler, feature_names = train_demo_model()
+    clf, scaler, feature_names = load_or_train_demo_model()
     
     print("="*75)
     print("  GOODREADS REVIEW POPULARITY PREDICTOR - INTERACTIVE LIVE DEMO")
@@ -179,8 +194,8 @@ def run_interactive_demo():
             
         # Process and predict
         feats = extract_features_from_text(text, user_reviews, ratings_count, user_rating, avg_rating, days)
-        row_vec = np.array([[feats[col] for col in feature_names]])
-        row_scaled = scaler.transform(row_vec)
+        row_df = pd.DataFrame([[feats[col] for col in feature_names]], columns=feature_names)
+        row_scaled = scaler.transform(row_df)
         
         prob = clf.predict_proba(row_scaled)[:, 1][0]
         is_pop = prob >= 0.5

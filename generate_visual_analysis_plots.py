@@ -98,8 +98,8 @@ plot_kde(axes[1, 2], unpop['abs_rating_diff'], pop['abs_rating_diff'],
          '6. Divergence from Book Consensus (|rating_diff|)',
          '|user_rating - avg_book_rating| (Stars)', (0.0, 4.0))
 
-plt.suptitle('Anatomy of Popular vs. Unpopular Book Reviews (Feature Density Separations)', fontsize=15, fontweight='bold', y=0.99)
-plt.tight_layout()
+plt.suptitle('Anatomy of Popular vs. Unpopular Book Reviews (Feature Density Separations)', fontsize=15, fontweight='bold', y=0.98)
+plt.tight_layout(rect=[0, 0, 1, 0.95])
 p1_path = os.path.join(output_dir, 'feature_distributions_comparison.png')
 plt.savefig(p1_path, dpi=300)
 plt.close()
@@ -151,8 +151,8 @@ ax.grid(True, linestyle='--', alpha=0.4)
 ax.text(0.05, 0.72, 'Captures diminishing returns:\nJump from 1 to 10 reviews is large;\njump from 2000 to 2010 is subtle.', transform=ax.transAxes,
         bbox=dict(boxstyle='round,pad=0.5', facecolor='white', alpha=0.9, edgecolor='blue', lw=1.5))
 
-plt.suptitle('Why Log Transformations Were Crucial: Resolving Massive Power-Law Skewness', fontsize=15, fontweight='bold', y=0.99)
-plt.tight_layout()
+plt.suptitle('Why Log Transformations Were Crucial: Resolving Massive Power-Law Skewness', fontsize=15, fontweight='bold', y=0.98)
+plt.tight_layout(rect=[0, 0, 1, 0.94])
 p2_path = os.path.join(output_dir, 'why_log_transforms_matter.png')
 plt.savefig(p2_path, dpi=300)
 plt.close()
@@ -221,7 +221,7 @@ print(f"    -> Saved {p3_path}")
 # PLOT 4: Confusion Matrices (Resolving the Accuracy Paradox)
 # =========================================================================
 print("[*] Generating Plot 4: Confusion Matrices...")
-fig, axes = plt.subplots(1, 3, figsize=(16, 5.2))
+fig, axes = plt.subplots(1, 3, figsize=(16, 5.8))
 
 def draw_cm(ax, cm, title, subtitle, cmap_color, title_color):
     im = ax.imshow(cm, interpolation='nearest', cmap=cmap_color)
@@ -249,8 +249,8 @@ draw_cm(axes[1], cm2, "2. Cost-Sensitive Gradient Boosting", "(Acc: 74.6% | Sens
 cm3 = np.array([[11103, 747], [1880, 1270]])
 draw_cm(axes[2], cm3, "3. Stacking Ensemble Meta-Learner", "(Acc: 82.5% | Sens: 40.3% | Spec: 93.7%)\nHIGH SPECIFICITY: 82.5% Overall Accuracy", "Greens", "#27ae60")
 
-plt.suptitle('Confusion Matrix Evolution: Solving the Class Imbalance & The Accuracy Paradox', fontsize=14, fontweight='bold', y=1.02)
-plt.tight_layout()
+plt.suptitle('Confusion Matrix Evolution: Solving the Class Imbalance & The Accuracy Paradox', fontsize=15, fontweight='bold', y=0.97)
+plt.tight_layout(rect=[0, 0, 1, 0.88])
 p4_path = os.path.join(output_dir, 'confusion_matrices_breakthrough.png')
 plt.savefig(p4_path, dpi=300)
 plt.close()

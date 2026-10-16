@@ -317,7 +317,7 @@ def build_pdf_report():
     story.append(Spacer(1, 3))
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#94A3B8'), spaceBefore=2, spaceAfter=3))
     story.append(Paragraph(
-        "<i>Repository: https://github.com/Preksha-a11y/goodreads_ML | Reproducible Pipeline: goodreads_kaggle_pipeline.ipynb | Live Demo: interactive_demo.py</i>",
+        "<i>Repository: https://github.com/Preksha-a11y/goodreads_ML | Master Pipeline: run_experiments.py | Live Demo: interactive_demo.py</i>",
         subtitle_style
     ))
 

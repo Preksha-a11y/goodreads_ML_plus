@@ -202,7 +202,7 @@ def run_interactive_demo():
         
         print("\n" + "-"*75)
         print(f"SCENARIO: {scenario_name}")
-        print(f"Sample Review: \"{text[:120]}...\"" if len(text) > 120 else f"Sample Review: \"{text}\"")
+        print(f"Sample Review: \"{text}\"")
         print("\nKey Extracted Signal Metrics:")
         print(f"  • Review Length:          {feats['num_words']} words (Effort Score: {feats['review_effort']:.2f})")
         print(f"  • VADER Sentiment Score:  {feats['sentiment']:+.3f}")
